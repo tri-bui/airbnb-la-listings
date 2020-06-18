@@ -1,4 +1,6 @@
 .ipynb_checkpoints/
 .DS_Store
+__pycache__/
 data/
+*.pyc
 mapbox_access_token.txt
