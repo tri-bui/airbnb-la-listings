@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from PIL import Image
+from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
     
     
 def hist_with_hue(df, col, bins, hue_col='by_superhost', height=5, aspect=2, alpha=0.75):
@@ -113,3 +115,18 @@ def corr_heatmap(df, var_list):
     sns.heatmap(df[var_list].corr(method='spearman'), annot=True, ax=ax[1])
     ax[1].set_title('Spearman correlation')
     ax[1].set_xticklabels(var_list, rotation=45, ha='right')
+    
+    
+def wordcloud(text, bg_color='white', stopwords=None):
+    
+    '''
+    Generate a word cloud image of some text.
+    
+    Args: text (string) - text to generate
+          bg_color (string) - background color of the image
+          stopwords (list[string]) - list of words to ignore when generating the word cloud
+    '''
+    
+    cloud = WordCloud(stopwords=stopwords, background_color=bg_color).generate(text)
+    plt.imshow(cloud, interpolation='bilinear')
+    plt.axis('off')
