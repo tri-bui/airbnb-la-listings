@@ -71,6 +71,39 @@ def hist_pct(df, ax, col='score_rtg', filter_col='by_superhost', filter_val=None
             ax.text(i, pct.iloc[i] + 2, f'{p}%', ha='center')
             
             
+def labeled_barplot(df, x, y, title, upper, col_loc=1, horizontal=True):
+    
+    '''
+    Plot a barplot labeled with bar values.
+    
+    Args: df (Pandas dataframe)
+          x (string) - name of column to plot on the x-axis
+          y (string) - name of column to plot on the y-axis
+          title (string) - plot title
+          upper (integer) - upper limit for x-axis if barplot is horizontal or y-axis if barplot is vertical
+          col_loc (integer) - column index of the numeric column being plotted
+          horizontal (boolean) - orientation of the barplot
+          
+    Returns: None
+    '''
+    
+    sns.barplot(data=df, x=x, y=y)
+    plt.title(title, fontsize=16)
+    
+    if horizontal:
+        plt.xlim(0, upper)
+        for i in range(0, df.shape[0]):
+            n = df.iloc[i, col_loc]
+            plt.text(n + 1, i, f'{n}', va='center')
+            
+    else:
+        plt.ylim(0, upper)
+        plt.xticks(rotation=15)
+        for i in range(0, df.shape[0]):
+            n = df.iloc[i, col_loc]
+            plt.text(i, n + 1, f'{n}', ha='center')
+            
+            
 def scatter_subplots(df, var_list, start_idx=2, figsize=(16, 16), subplot_rows=3, subplot_cols=3):
     
     '''
@@ -130,3 +163,5 @@ def wordcloud(text, bg_color='white', stopwords=None):
     cloud = WordCloud(stopwords=stopwords, background_color=bg_color).generate(text)
     plt.imshow(cloud, interpolation='bilinear')
     plt.axis('off')
+    
+    
