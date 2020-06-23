@@ -92,14 +92,14 @@ def labeled_barplot(df, x, y, title, upper, col_loc=1, horizontal=True):
     
     if horizontal:
         plt.xlim(0, upper)
-        for i in range(0, df.shape[0]):
+        for i in range(df.shape[0]):
             n = df.iloc[i, col_loc]
             plt.text(n + 1, i, f'{n}', va='center')
             
     else:
         plt.ylim(0, upper)
         plt.xticks(rotation=15)
-        for i in range(0, df.shape[0]):
+        for i in range(df.shape[0]):
             n = df.iloc[i, col_loc]
             plt.text(i, n + 1, f'{n}', ha='center')
             
