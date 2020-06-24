@@ -13,7 +13,8 @@ def hist_with_hue(df, col, bins, hue_col='by_superhost', height=5, aspect=2, alp
     
     Args: df (Pandas dataframe)
           col (string) - name of column to plot
-          bins (integer or list/generator) - number of bins or list/generator of bin edges
+          bins (integer or list/generator) - number of bins or list/generator of 
+                                             bin edges
           hue_col (string) - name of column to use as hue
           height (integer or float) - plot height
           aspect (integer or float) - width-to-height ratio for plot
@@ -30,14 +31,17 @@ def hist_with_hue(df, col, bins, hue_col='by_superhost', height=5, aspect=2, alp
 def hist_pct(df, ax, col='score_rtg', filter_col='by_superhost', filter_val=None,  bins=range(0, 110, 10), title=None, xlab=None, ylab=None):
     
     '''
-    Plot a histogram of the selected column in a dataframe on a relative scale (percentage).
-    There are options to filter on another column and to bin values into intervals.
+    Plot a histogram of the selected column in a dataframe on a relative scale 
+    (percentage).
+    There are options to filter on another column and to bin values into 
+    intervals.
     
     Args: df (Pandas dataframe)
           col (string) - name of column to plot
           filter_col (string) - name of column to filter on
           filter_val - value to filter for on `filter_col`
-          bins (integer or list/generator) - number of bins or list/generator of bin edges
+          bins (integer or list/generator) - number of bins or list/generator of 
+                                             bin edges
           ax (Matplotlib axis object) - axis to plot on
           title (string) - plot title
           xlab (string) - label for x-axis
@@ -80,7 +84,8 @@ def labeled_barplot(df, x, y, title, upper, col_loc=1, horizontal=True):
           x (string) - name of column to plot on the x-axis
           y (string) - name of column to plot on the y-axis
           title (string) - plot title
-          upper (integer) - upper limit for x-axis if barplot is horizontal or y-axis if barplot is vertical
+          upper (integer) - upper limit for x-axis if barplot is horizontal or 
+                            y-axis if barplot is vertical
           col_loc (integer) - column index of the numeric column being plotted
           horizontal (boolean) - orientation of the barplot
           
@@ -107,8 +112,8 @@ def labeled_barplot(df, x, y, title, upper, col_loc=1, horizontal=True):
 def scatter_subplots(df, var_list, start_idx=2, figsize=(16, 16), subplot_rows=3, subplot_cols=3):
     
     '''
-    Create a scatterplot of the first variable in a variable list against every other variable
-    in the list, starting with the start index, in subplots.
+    Create a scatterplot of the first variable in a variable list against every 
+    other variable in the list, starting with the start index, in subplots.
     
     Args: df (Pandas dataframe)
           var_list (list[string]) - list of variables to plot
@@ -157,7 +162,8 @@ def wordcloud(text, bg_color='white', stopwords=None):
     
     Args: text (string) - text to generate
           bg_color (string) - background color of the image
-          stopwords (list[string]) - list of words to ignore when generating the word cloud
+          stopwords (list[string]) - list of words to ignore when generating the 
+                                     word cloud
     '''
     
     cloud = WordCloud(stopwords=stopwords, background_color=bg_color).generate(text)
