@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import json
 
 
 def get_token(path='mapbox_access_token.txt'):
@@ -15,20 +14,6 @@ def get_token(path='mapbox_access_token.txt'):
     
     with open(path) as key:
         return key.read()
-    
-    
-def get_langeo(path='data/la-county-neighborhoods-current.geojson'):
-    
-    '''
-    Load the geojson data of Los Angeles neighborhoods
-    
-    Args: path (string) - path to the json file of the geographic data
-    
-    Returns: Los Angeles neighborhood geographic data (json)
-    '''
-    
-    with open(path) as geo:
-        return json.load(geo)
     
     
 def desc_byhost(df, col, host_col='by_superhost'):
@@ -72,7 +57,8 @@ def sample_byinterval(df, col, lower, upper, step, size=100):
     return pd.concat(samples)
 
 
-def agg_to_2cols(df, agg_col, agg_col_name, groupby_col='neighborhood', groupby_col_name='Neighborhood', agg_by_mean=True, round_to=2):
+def agg_to_2cols(df, agg_col, agg_col_name, groupby_col='neighborhood', 
+                 groupby_col_name='Neighborhood', agg_by_mean=True, round_to=2):
     
     '''
     Aggregate a dataframe into 2 columns - grouping by 1 and aggregating the other 

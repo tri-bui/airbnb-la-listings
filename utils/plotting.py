@@ -1,12 +1,15 @@
+import json
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.express as px
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
     
     
-def hist_with_hue(df, col, bins, hue_col='by_superhost', height=5, aspect=2, alpha=0.75):
+def hist_with_hue(df, col, bins, hue_col='by_superhost', height=5, aspect=2, 
+                  alpha=0.75):
     
     '''
     Plot a histogram of a dataframe's column using another column as the color hue.
@@ -170,4 +173,47 @@ def wordcloud(text, bg_color='white', stopwords=None):
     plt.imshow(cloud, interpolation='bilinear')
     plt.axis('off')
     
+
+def get_langeo(path='data/la-county-neighborhoods-current.geojson'):
     
+    '''
+    Load the geojson data of Los Angeles neighborhoods
+    
+    Args: path (string) - path to the json file of the geographic data
+    
+    Returns: Los Angeles neighborhood geographic data (json)
+    '''
+    
+    with open(path) as geo:
+        return json.load(geo)
+    
+    
+def choropleth_map(df, color_col, loc_col='Neighborhood', center_lat=33.95, center_lon=-118.35, zoom=9, height=600, color_scale='Viridis', colorbar_range=None):
+    
+    '''
+    Plot a choropleth map of the neighborhoods in LA. The neighborhoods are colored 
+    based on the passed in column.
+    
+    Args: df (Pandas dataframe)
+          color_col (string) - name of column that determines the color of each 
+                               neighborhood on the map
+          colorbar_range (tuple(integer): length 2) - lower and upper limits for the 
+                                                      colorbar
+          loc_col (string) - name of neighborhood column
+          center_lat (float) - latitude at the center of the map
+          center_lon (float) - longitude at the center of the map
+          zoom (integer or float) - zoom ratio of the map
+          height (integer) - height of the map
+          color_scale (string) - name of the color palette to use
+          
+    Returns: Mapbox object with map (use the .show() method to show the map)
+    '''
+    
+    # Geojson for LA neighborhoods
+    la = get_langeo()
+    return px.choropleth_mapbox(df, geojson=la, featureidkey='properties.name', 
+                                color=color_col, locations=loc_col, 
+                                center={'lat': center_lat, 'lon': center_lon},
+                                zoom=zoom, height=height,
+                                color_continuous_scale=color_scale,
+                                range_color=colorbar_range)
