@@ -26,7 +26,8 @@ def desc_byhost(df, col, host_col='by_superhost'):
           col (string) - name of column to describe
           host_col (string) - name of the superhost column
           
-    Returns: descriptive statistics of the selected column separated by the host column (Pandas dataframe)
+    Returns: descriptive statistics of the selected column separated by the host 
+             column (Pandas dataframe)
     '''
     
     frame = df[df[host_col] == 0][[col]].describe()
@@ -86,3 +87,89 @@ def agg_to_2cols(df, agg_col, agg_col_name, groupby_col='neighborhood',
         
     frame.columns = [groupby_col_name, agg_col_name]
     return frame
+
+
+def dup_feats(df):
+    
+    '''
+    Find duplicated features in a dataframe.
+    
+    Args: df (Pandas dataframe)
+    
+    Returns: Pairs of duplicated features (list[list[string]: length 2])
+    '''
+    
+    cols = df.columns.tolist()
+    dup = []
+    
+    for i in range(len(cols) - 1):
+        for j in range(i + 1, len(cols)):
+            if df[cols[i]].equals(df[cols[j]]):
+                dup.append([cols[i], cols[j]])
+                
+    return dup if len(dup) else None
+
+
+def const_feats(df, threshold=0.05):
+    
+    '''
+    Find constant and quasi-constant features. A feature is considered 
+    quasi-constant if its variance is less than the defined threshold.
+    
+    Args: df (Pandas dataframe)
+          threshold (float) - variance threshold to consider a feature 
+                              quasi-constant
+                              
+    Returns: List of constant and quasi-constant features (list[string])
+    '''
+    
+    const = df.var()[df.var() < threshold].index.tolist()
+    return const if len(const) else None
+
+
+def const_cat_feats(df, threshold=0.95):
+    
+    '''
+    Find constant and quasi-constant categorical features. A feature is 
+    considered quasi-constant if any of its values has a relative count 
+    greater than the defined threshold.
+    
+    Args: df (Pandas dataframe)
+          threshold (float) - relative count threshold to consider a feature 
+                              quasi-constant
+                              
+    Returns: List of constant and quasi-constant features (list[string])
+    '''
+    
+    cols = df.dtypes[df.dtypes == 'object'].index.tolist()
+    const = []
+    
+    for col in cols:
+        value_pct = df[col].value_counts() / df.shape[0]
+        if value_pct[0] > threshold:
+            const.append(col)
+            
+    return const if len(const) else None
+
+
+def corr_feats(df, threshold=0.5):
+    
+    '''
+    Find correlated features.
+    
+    Args: df (Pandas dataframe)
+          threshold (float) - threshold for correlation coefficient
+          
+    Returns: Pairs of correlated features (list[list[string, string, float]])
+    '''
+    
+    feats = df.columns.tolist()
+    corr = []
+    
+    for i in range(len(feats) - 1):
+        for j in range(i + 1, len(feats)):
+            coef = df[feats[i]].corr(df[feats[j]])
+            if coef > threshold:
+                corr.append([feats[i], feats[j], coef])
+    
+    return corr if len(corr) else None

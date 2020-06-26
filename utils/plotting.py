@@ -136,26 +136,39 @@ def scatter_subplots(df, var_list, start_idx=2, figsize=(16, 16), subplot_rows=3
         plt.ylabel(var_list[i])
         
         
-def corr_heatmap(df, var_list):
+def corr_heatmap(df, var_list, show_spearman=False, palette=None, center=None):
     
     '''
     Create a heatmap for Pearson correlation and Spearman correlation.
     
     Args: df (Pandas dataframe)
           var_list (list[string]) - list of variables to plot
+          show_spearman (boolean) - whether to show the Spearman correlation in
+                                    a second subplot
+          
+    Returns: correlation table (Pandas dataframe)
     '''
     
-    fig, ax = plt.subplots(1, 2, figsize=(16, 6))
+    if show_spearman:
+        fig, ax = plt.subplots(1, 2, figsize=(16, 6))
 
-    # Pearson correlation
-    sns.heatmap(df[var_list].corr(), annot=True, ax=ax[0])
-    ax[0].set_title('Pearson correlation')
-    ax[0].set_xticklabels(var_list, rotation=45, ha='right')
+        # Pearson correlation
+        sns.heatmap(df[var_list].corr(), annot=True, cmap=palette, center=center, ax=ax[0])
+        ax[0].set_title('Pearson correlation')
+        ax[0].set_xticklabels(var_list, rotation=45, ha='right')
 
-    # Spearman correlation
-    sns.heatmap(df[var_list].corr(method='spearman'), annot=True, ax=ax[1])
-    ax[1].set_title('Spearman correlation')
-    ax[1].set_xticklabels(var_list, rotation=45, ha='right')
+        # Spearman correlation
+        sns.heatmap(df[var_list].corr(method='spearman'), annot=True, cmap=palette, center=center, ax=ax[1])
+        ax[1].set_title('Spearman correlation')
+        ax[1].set_xticklabels(var_list, rotation=45, ha='right')
+        
+    else:
+        sns.heatmap(df[var_list].corr(), cmap=palette, center=center)
+        plt.title('Pearson correlation')
+        plt.xticks(rotation=45, ha='right')
+        
+    plt.show()
+    return df[var_list].corr()
     
     
 def wordcloud(text, bg_color='white', stopwords=None):
@@ -167,6 +180,8 @@ def wordcloud(text, bg_color='white', stopwords=None):
           bg_color (string) - background color of the image
           stopwords (list[string]) - list of words to ignore when generating the 
                                      word cloud
+                                     
+    Returns: None
     '''
     
     cloud = WordCloud(stopwords=stopwords, background_color=bg_color).generate(text)
