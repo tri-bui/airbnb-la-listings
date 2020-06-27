@@ -173,3 +173,22 @@ def corr_feats(df, threshold=0.5):
                 corr.append([feats[i], feats[j], coef])
     
     return corr if len(corr) else None
+
+
+def check_nb(row, tier, nb_list, nb_col='neighborhood', tier_col='price_tier'):
+    
+    '''
+    Helper function to assign a price tier to a listing if its
+    neighborhood is in the given list. This helper function is to be passed
+    into a Pandas dataframe's apply method with an axis argument of 1.
+    
+    Args: row (row in Pandas dataframe)
+          tier (integer) - tier value to assign to the listing
+          nb_list (list[string]) - list of neighborhoods in a certain tier
+          nb_col (string) - name of neighborhood column
+          tier_col (string) - name of price tier column
+          
+    Returns: Price tier value (integer)
+    '''
+    
+    return tier if row[nb_col] in nb_list else row[tier_col] 

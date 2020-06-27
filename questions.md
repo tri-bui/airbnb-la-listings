@@ -1,10 +1,8 @@
-# Questions
+# Analysis Outline
 
 ### - Is there a difference with listings by superhosts?
 
 ### - Are higher ratings associated with higher costs?
-
-### - Should we avoid security deposits and cleaning fees?
 
 ### - What are reviewers saying?
 
