@@ -191,4 +191,35 @@ def check_nb(row, tier, nb_list, nb_col='neighborhood', tier_col='price_tier'):
     Returns: Price tier value (integer)
     '''
     
-    return tier if row[nb_col] in nb_list else row[tier_col] 
+    return tier if row[nb_col] in nb_list else row[tier_col]
+
+
+def onehot_encoder(df, var_list, num_lab=2, drop_og=True):
+    
+    '''
+    One-hot encode a given list of categorical variables. Only the most 
+    frequent labels will be encoded for each variable. The number of labels
+    to encode is 2 by default.
+    
+    Args: df (Pandas dataframe)
+          var_list (list[string]) - list of categorical variables to 
+                                    one-hot encode
+          num_lab (integer) - number of labels to encode for each variable
+          drop_og (boolean) - whether to drop the original categorical
+                              column after encoding it
+                            
+    Returns: Data with categorical variables one-hot encoded (Pandas dataframe)
+    '''
+    
+    df = df.copy()
+    
+    for var in var_list:
+        labels = df[var].value_counts().index[:num_lab]
+        
+        for lab in labels:
+            df[var + '_' + lab] = df[var].apply(lambda x: 1 if x == lab else 0)
+            
+    if drop_og:
+        df.drop(var_list, axis=1, inplace=True)
+        
+    return df
