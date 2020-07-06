@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from sklearn.metrics import mean_squared_error
 
 
 def get_token(path='mapbox_access_token.txt'):
@@ -168,7 +169,7 @@ def corr_feats(df, threshold=0.5):
     
     for i in range(len(feats) - 1):
         for j in range(i + 1, len(feats)):
-            coef = df[feats[i]].corr(df[feats[j]])
+            coef = abs(df[feats[i]].corr(df[feats[j]]))
             if coef > threshold:
                 corr.append([feats[i], feats[j], coef])
     
@@ -223,3 +224,100 @@ def onehot_encoder(df, var_list, num_lab=2, drop_og=True):
         df.drop(var_list, axis=1, inplace=True)
         
     return df
+
+
+def log_transform(series, inverse=False):
+    
+    '''
+    Log transform a series or inverse-log transform.
+    
+    Args: series (Pandas series)
+          inverse (boolean) - whether to inverse-log transform
+          
+    Return: transformed series (Pandas series)
+    '''
+    
+    series = series.copy()
+    if inverse:
+        return np.exp(series)
+    return np.log(series)
+
+
+def feat_coefs(feats, coefs, feat_name='feat', coef_name='coef', sort=True):
+    
+    '''
+    Show the coefficient of each feature.
+    
+    Args: feats (list[string]) - list of feature names
+          coefs (list[float]) - list of coefficients
+          feat_name (string) - name of feature column in resulting dataframe
+          coef_name (string) - name of coefficient column in resulting dataframe
+          sort (boolean) - whether to sort the coefficients in descending order
+          
+    Returns: Features and their corresponding coefficient (Pandas dataframe)
+    '''
+    
+    df = pd.DataFrame(zip(feats, coefs), columns=[feat_name, coef_name])
+    if sort:
+        df.sort_values(coef_name, ascending=False, inplace=True)
+    return df
+
+
+def make_pred(model, df_test, df_train=None, inverse_transform=True):
+    
+    '''
+    Make predictions using a specified model for the test set and optionally
+    the train set. If only the test set is passed in, an empty array will be
+    returned for the train predictions.
+    
+    Args: model (Sklearn model instance) - model to predict with
+          df_test (Pandas dataframe) - test set
+          df_train (Pandas dataframe) - train set
+          inverse_transform (boolean) - whether to inverse-log-transform the
+                                        predictions
+                                        
+    Returns: predictions for the test and train sets
+             (list[Pandas series]: length 2)
+    '''
+    
+    pred_test = model.predict(df_test)
+    pred_train = [] if df_train is None else model.predict(df_train)
+    
+    if inverse_transform:
+        pred_test = log_transform(pred_test, inverse=True)
+        pred_train = log_transform(pred_train, inverse=True)
+        
+    return pred_test, pred_train
+
+
+def score_rmse(true_test, pred_test, true_train=[1], pred_train=[1], log_true=True, log_pred=False):
+    
+    '''
+    Calculate the root mean squared error for the test set and optionally the
+    train set. This function calculates the RMSE for true values, so if any
+    input set(s) are log-transformed, they will be inverse-log-transformed
+    before the RMSE is calculated. If only the test sets are passed in, the
+    RMSE for the train set will be returned as 0.
+    
+    Args: true_test (Pandas series) - true target variable from test set
+          pred_test (Pandas series) - predicted target variable from test set
+          true_train (Pandas series) - true target variable from train set
+          pred_train (Pandas series) - predicted target variable from train set
+          log_true (boolean) - whether the input true set(s) are log-transformed
+          log_pred (boolean) - whether the input predicted set(s) are log-transformed
+    
+    Returns: root mean squared error for the test and train sets 
+             (list[float]: length 2)
+    '''
+    
+    if log_true:
+        true_test = log_transform(true_test, inverse=True)
+        true_train = log_transform(true_train, inverse=True)
+        
+    if log_pred:
+        pred_test = log_transform(pred_test, inverse=True)
+        pred_train = log_transform(pred_train, inverse=True)
+        
+    rmse_test = np.sqrt(mean_squared_error(true_test, pred_test))
+    rmse_train = np.sqrt(mean_squared_error(true_train, pred_train))
+    return rmse_test, rmse_train
