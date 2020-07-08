@@ -267,8 +267,8 @@ def make_pred(model, df_test, df_train=None, inverse_transform=True):
     
     '''
     Make predictions using a specified model for the test set and optionally
-    the train set. If only the test set is passed in, an empty array will be
-    returned for the train predictions.
+    the train set. If only the test set is passed in, an array containing 1 will 
+    be returned for the train predictions.
     
     Args: model (Sklearn model instance) - model to predict with
           df_test (Pandas dataframe) - test set
@@ -281,7 +281,7 @@ def make_pred(model, df_test, df_train=None, inverse_transform=True):
     '''
     
     pred_test = model.predict(df_test)
-    pred_train = [] if df_train is None else model.predict(df_train)
+    pred_train = [1] if df_train is None else model.predict(df_train)
     
     if inverse_transform:
         pred_test = log_transform(pred_test, inverse=True)
@@ -321,3 +321,43 @@ def score_rmse(true_test, pred_test, true_train=[1], pred_train=[1], log_true=Tr
     rmse_test = np.sqrt(mean_squared_error(true_test, pred_test))
     rmse_train = np.sqrt(mean_squared_error(true_train, pred_train))
     return rmse_test, rmse_train
+
+
+def score_model(model, xtest, ytest, xtrain=None, ytrain=[1], toprint=True):
+    
+    '''
+    Score a model with the R2 score and root mean squared error for the test set
+    and optionally the train set. If only the test sets are passed in, both the
+    R2 score and RMSE for the train set will be returned as 0.
+    
+    Args: model (Sklearn model instance) - model to score
+          xtest (Pandas dataframe) - test set
+          ytest (Pandas series) - test target
+          xtrain (Pandas dataframe) - train set
+          yterain (Pandas series) - train target
+          
+    Returns: R2 score and root mean squared error for the test and train sets 
+             (list[float]: length 4)
+    '''
+    
+    # R2 score
+    
+    ptest, ptrain = make_pred(model=model, df_test=xtest, df_train=xtrain)
+    rmse_test, rmse_train = score_rmse(true_test=ytest, pred_test=ptest, true_train=ytrain, pred_train=ptrain)
+    
+    r2_train = 0
+    if xtrain is not None:
+        r2_train = model.score(xtrain, ytrain)
+        if toprint:
+            print('Train R2 Score:', r2_train)
+            print('Train RMSE:', rmse_train)
+            print()
+    
+    r2_test = model.score(xtest, ytest)
+    if toprint:
+        print('R2 Score:', r2_test)
+        print('RMSE:', rmse_test)
+    
+    return r2_test, rmse_test, r2_train, rmse_train
+
+
