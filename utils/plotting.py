@@ -65,7 +65,8 @@ def hist_pct(df, ax, col='score_rtg', filter_col='by_superhost', filter_val=None
     pct.plot(kind='bar', ax=ax)
     
     # Plot settings
-    ax.set_xticklabels(pct.index, rotation=45, ha='right')
+    labs = ['0 - 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50', '50 - 60', '60 - 70', '70 - 80', '80 - 90', '90 - 100']
+    ax.set_xticklabels(labs, rotation=45, ha='right')
     ax.set_ylim(0, 110)
     ax.set_title(title)
     ax.set_xlabel(xlab)
@@ -75,7 +76,7 @@ def hist_pct(df, ax, col='score_rtg', filter_col='by_superhost', filter_val=None
     for i in range(0, 10):
         p = pct.iloc[i]
         if p > 0:
-            ax.text(i, pct.iloc[i] + 2, f'{p}%', ha='center')
+            ax.text(i - 0.1, pct.iloc[i] + 2, f'{p}%', ha='center')
             
             
 def labeled_barplot(df, x, y, title, upper, col_loc=1, horizontal=True):

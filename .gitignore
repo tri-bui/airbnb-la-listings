@@ -3,5 +3,6 @@
 __pycache__/
 data/
 drafts/
+blog/
 *.pyc
 mapbox_access_token.txt
