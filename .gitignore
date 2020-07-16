@@ -1,9 +1,10 @@
 .ipynb_checkpoints/
 .DS_Store
+
 __pycache__/
+*.pyc
 drafts/
 blog/
-*.pyc
 
 data/
 figs/
