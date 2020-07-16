@@ -29,8 +29,8 @@ Note: The `notebooks/` directory was created to keep the repository clean.
 1. Move all content in the `notebooks/` directory to the main directory.
 2. Under "Los Angeles, California, United States" at the [data source](http://insideairbnb.com/get-the-data.html), download `listings.csv` and `reviews.csv` to a directory called `data/` and add this directory to the main directory.
 3. Sign up for free at [MapBox](https://www.mapbox.com/) to get an access token. Store the access token string in a file named `mapbox_access_token.txt` and add it to the main directory.
-4. Download the GeoJSON file from [here](http://boundaries.latimes.com/set/la-county-neighborhoods-current/)
-5. *Optional* `visualizations.ipynb` was created to generate the figures for the Medium article, so it is not part of the project. However, if you want to run it, create a directory called `figs/` in the main directory. *
+4. Download the GeoJSON file from [here](http://boundaries.latimes.com/set/la-county-neighborhoods-current/) and add it to the `data/` directory.
+5. \*Optional\* `visualizations.ipynb` was created to generate the figures for the Medium article, so it is not part of the project. However, if you want to run it, create a directory called `figs/` in the main directory.
 
 Steps (3) and (4) are required for the Plotly-Mapbox plots to work. After the setup, the directory should look like below.
 
@@ -54,7 +54,7 @@ airbnb_la_listings/
 
 #### Requirements
 - Python 3
-- Packages: Jupyter notebooks/lab, Uszipcode, Scipy, Numpy, Pandas, Matplotlib, Seaborn, Plotly, WordCloud, Scikit-learn
+- Packages: Jupyter notebooks/lab, Uszipcode, Scipy, Numpy, Pandas, Matplotlib, Seaborn, Plotly, Wordcloud, Scikit-learn
 
 ## License
 This repository is licensed under a [Creative Commons Attribution License](https://creativecommons.org/licenses/by/4.0/).
