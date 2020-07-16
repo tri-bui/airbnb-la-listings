@@ -1,8 +1,10 @@
 .ipynb_checkpoints/
 .DS_Store
 __pycache__/
-data/
 drafts/
 blog/
 *.pyc
+
+data/
+figs/
 mapbox_access_token.txt
