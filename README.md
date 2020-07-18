@@ -22,7 +22,7 @@ The data used in this project was compiled on May 8, 2020, and can be found [her
 - `utils/plotting.py` - user-defined functions for plotting
 - `utils/utils.py` - user-defined functions for all other utilities
 
-## To run the notebooks, the project directory must be set up
+## Getting Started
 
 #### Setup
 1. Under "Los Angeles, California, United States" at the [data source](http://insideairbnb.com/get-the-data.html), download `listings.csv` and `reviews.csv` to a directory called `data/` and add this directory to the main directory.
