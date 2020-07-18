@@ -36,13 +36,13 @@ Steps (2) and (3) are required for the Plotly-Mapbox plots to work. After the se
 <pre>
 airbnb_la_listings/
 |-- data/
-    |-- la-county-neighborhoods-current.geojson
-    |-- listings.csv
-    |-- reviews.csv
+|   |-- la-county-neighborhoods-current.geojson
+|   |-- listings.csv
+|   |-- reviews.csv
 |-- figs/ *
 |-- utils/
-    |-- plotting.py
-    |-- utils.py
+|   |-- plotting.py
+|   |-- utils.py
 |-- 1-preprocessing.ipynb
 |-- 2-eda.ipynb
 |-- 3-modeling.ipynb
