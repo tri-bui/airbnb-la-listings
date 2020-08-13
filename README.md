@@ -34,7 +34,7 @@ Steps (2) and (3) are required for the Plotly-Mapbox plots to work. After the se
 
 #### Structure
 <pre>
-airbnb_la_listings/
+airbnb-la-listings/
 |-- data/
 |   |-- la-county-neighborhoods-current.geojson
 |   |-- listings.csv
