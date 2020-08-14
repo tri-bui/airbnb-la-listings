@@ -9,7 +9,7 @@
 6. Can we predict the price of a listing?
 7. What factors have the most impact on price?
 
-#### If in the future, you are ever looking for a place to stay in LA, then you are the target audience! Read about it on my [blog post](https://medium.com/@buitri/essential-guide-to-navigating-airbnb-in-los-angeles-cf8a932501b7).
+#### If in the future, you are ever looking for a place to stay in LA, then you are the target audience! Read about it on my [blog post](https://medium.com/analytics-vidhya/essential-guide-to-navigating-airbnb-in-los-angeles-cf8a932501b7).
 
 ## Data
 The data used in this project was compiled on May 8, 2020, and can be found [here](http://insideairbnb.com/get-the-data.html) under "Los Angeles, California, United States". The main dataset used was `listings.csv`, which contains 37,048 AirBnb listings in Los Angeles County and 106 features for each listing. `reviews.csv` was also used, which contains 1,304,140 reviews that users left for these listings.
